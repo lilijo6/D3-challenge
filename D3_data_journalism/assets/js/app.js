@@ -7,8 +7,8 @@ var svgHeight = 660;
 var chartMargin = {
     top: 30,
     right: 30,
-    bottom: 30,
-    left: 30
+    bottom: 100,
+    left: 100
 };
 
 // Define dimensions of the chart area
@@ -31,10 +31,6 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
 
     console.log(censusData);
 
-    //Copied from activity 8 Day 3
-    // // create date parser
-    // var dateParser = d3.timeParse("%d-%b");
-
     // parse data and use + method to convert string to numeric value
     censusData.forEach(function(data) {
         data.healthcare = +data.healthcare;
@@ -48,7 +44,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .range([0, chartWidth]);
 
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(censusData, d => d.healthcare)])
+        .domain([d3.min(censusData, d => d.healthcare) * 0.8, d3.max(censusData, d => d.healthcare)])
         .range([chartHeight, 0]);
 
     // create axes
@@ -63,22 +59,40 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     chartGroup.append("g")
         .call(yAxis);
 
+    var circRadius;
+
+
     // Step 5: Create Circles Activity 9 Day 3
     // ==============================
-    var circlesGroup = chartGroup.selectAll("circle")
+    var circlesGroup = chartGroup.selectAll("g")
         .data(censusData)
         .enter()
         .append("circle")
         .attr("cx", d => xScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
-        .attr("r", "15")
-        .attr("fill", "blue")
-        .attr("opacity", ".5");
+        .attr("r", "20")
+        .attr("class", "stateCircle")
+    circlesGroup.append("text")
+        .text(d => d.abbr)
+        .attr("class", "stateText")
+
+    // // adding the State abbreviation to the circles
+    // var stateText = chartGroup.selectAll(".text")
+    //     .data(censusData)
+    //     .enter()
+    //     .append("text")
+    //     .text(d => d.abbr)
+    //     .attr("dx", d => xScale(d.poverty))
+    //     .attr("dy", d => yLinearScale(d.healthcare))
+    //     .classed("stateText", true)
+    //     // .attr("transform", `translate(-10,6)`)
+    //     // .style("fill", "white")
+
 
     // Step 6: Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
-        .attr("class", "tooltip")
+        .attr("class", "d3-tip")
         .offset([80, -60])
         .html(function(d) {
             return (`${d.state}<br>Poverty: ${d.poverty}% <br>Healthcare: ${d.healthcare}%`);
@@ -90,13 +104,21 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
 
     // Step 8: Create event listeners to display and hide the tooltip
     // ==============================
-    circlesGroup.on("click", function(data) {
+    circlesGroup.on("mouseover", function(data) {
             toolTip.show(data, this);
         })
         // onmouseout event
         .on("mouseout", function(data, index) {
             toolTip.hide(data);
         });
+    // //Create a label group for x and y axes labels
+    // var labelGroup = chartGroup.append("g")
+    //     .attr("transform", `translate($ { chartWith / 2 }, $ { chartHeight + 20 })
+    //                 `);
+
+    // //creating a new circle radius
+    // var circRadius;
+
 
     // Create axes labels
     chartGroup.append("text")
@@ -104,12 +126,12 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("y", 0 - chartMargin.left + 40)
         .attr("x", 0 - (chartHeight / 2))
         .attr("dy", "1em")
-        .attr("class", "axisText")
+        .attr("class", "aText")
         .text("Lacks in Healthcare (%)");
 
     chartGroup.append("text")
-        .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + chartMargin.top + 30})`)
-        .attr("class", "axisText")
+        .attr("transform", `translate(${chartWidth / 2 }, ${chartHeight + chartMargin.top + 30 })`)
+        .attr("class", "aText")
         .text("In Poverty (%)");
 
 }).catch(function(error) {
