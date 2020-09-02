@@ -62,7 +62,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     var circRadius;
 
 
-    // Step 5: Create Circles Activity 9 Day 3
+    //  Create Circles Activity 9 Day 3
     // ==============================
     var circlesGroup = chartGroup.selectAll("circle")
         .data(censusData)
@@ -73,7 +73,12 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("r", "20")
         .attr("class", "stateCircle")
         // circlesGroup.append("text")
-        //     .text(d => d.abbr)
+        //     .text(d => {
+        //         console.log(d.abbr)
+        //         return d.abbr
+        //     })
+        //     .attr("x", d => xScale(d.poverty))
+        //     .attr("y", d => yLinearScale(d.healthcare))
         //     .attr("class", "stateText")
 
     // adding the State abbreviation to the circles
@@ -88,7 +93,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("transform", `translate(-0.5,5)`)
 
 
-    // Step 6: Initialize tool tip
+    // Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
         .attr("class", "d3-tip")
@@ -97,11 +102,11 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
             return (`${d.state}<br>Poverty: ${d.poverty}% <br>Healthcare: ${d.healthcare}%`);
         });
 
-    // Step 7: Create tooltip in the chart
+    // Create tooltip in the chart
     // ==============================
     chartGroup.call(toolTip);
 
-    // Step 8: Create event listeners to display and hide the tooltip
+    // Create event listeners to display and hide the tooltip
     // ==============================
     circlesGroup.on("mouseover", function(data) {
             toolTip.show(data, this);
@@ -132,30 +137,3 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
 }).catch(function(error) {
     console.log(error);
 });
-
-
-
-//     // // Transitions copied from https://bl.ocks.org/d3noob/899a0b2490318a96f9ebd40a5a84e4a7
-
-// // var svg = d3.select("body") // Select the body element
-// //     .append("svg") // Append an SVG element to the body
-// //     .attr("width", 960) // make it 960 pixels wide
-// //     .attr("height", 500) // make it 500 pixels high
-// //     .append("circle") // append a circle to the svg
-// //     .style("fill", "blue") // fill the circle with 'blue'
-// //     .attr("r", 20) // set the radius to 10 pixels
-// //     .attr('cx', 40) // position the circle at 40 on the x axis
-// //     .attr('cy', 250) // position the circle at 250 on the y axis
-// //     // 1st transition  
-// //     .transition() // apply a transition
-// //     .duration(4000) // apply it over 4000 milliseconds
-// //     .attr('cx', 920) // new horizontal position at 920 on x axis
-// //     // 2nd transition
-// //     .transition() // apply a transition
-// //     .duration(4000) // apply it over 4000 milliseconds
-// //     .attr('r', 40) // new radius of 40 pixels
-// //     // 3rd transition
-// //     .transition() // apply a transition
-// //     .duration(4000) // apply it over 4000 milliseconds
-// //     .style('fill', "red");
-// })

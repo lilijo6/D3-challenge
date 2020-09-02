@@ -26,6 +26,78 @@ var svg = d3.select("#scatter")
 var chartGroup = svg.append("g")
     .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
 
+//Initial Params
+var chosenXAxis = "in_poverty";
+var chosenYAxis = "healthcare";
+
+//function used for updating x-scale var upon click on axis label
+function xScale(censusData, chosenXAxis)
+// create scales
+var xlinearScale = d3.scaleLinear()
+    .domain([d3.min(censusData, d => d[chosenXAxis]) * 0.8, d3.max(censusData, d => d[chosenXAxis]) * 1.2])
+    .range([0, chartWidth]);
+
+return xlinearScale;
+}
+
+//function used for updating xAxis var upon click on axis label
+function renderXAxes(newXScale, xAxis) {
+    var bottomAxis = d3.axisBottom(newXScale);
+
+    xAxis.transition()
+        .duration(1000)
+        .call(bottomAxis);
+
+    return xAxis;
+}
+
+//function used for updating y-scale var upon click on axis label
+function yScale(censusData, chosenYAxis)
+// create scales
+var ylinearScale = d3.scaleLinear()
+    .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8, d3.max(censusData, d => d[chosenYAxis]) * 1.2])
+    .range([0, chartWidth]);
+
+return ylinearScale;
+}
+
+//function used for updating yAxis var upon click on axis label
+function renderYAxes(newYScale, yAxis) {
+    var leftAxis = d3.axisBottom(newYScale);
+
+    yAxis.transition()
+        .duration(1000)
+        .call(leftAxis);
+
+    return yAxis;
+}
+
+//function used for updating circles group with a transition to new circles
+function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+
+    circlesGroup.transition()
+        .duration(1000)
+        .attr("cx", d => newXScale(d[chosenXAxis]));
+
+    return circlesGroup;
+}
+
+//function used for updating circles group with new tooltip
+
+function updateToolTip(chosenXAxis, circlesGroup) {
+
+    var label:
+
+        if (chosenXAxis === "in_poverty") {
+            label = "In Poverty [%]:";
+        } else
+    if (chosenXAxis === "age_median") {
+        label = "Median age: ";
+    } else {
+        lable = "Houshold Income:"
+    }
+}
+
 // Load data from hours-of-tv-watched.csv
 d3.csv("assets/data/data.csv").then(function(censusData) {
 
