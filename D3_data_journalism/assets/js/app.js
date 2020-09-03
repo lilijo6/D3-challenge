@@ -1,4 +1,3 @@
-// Copied from activity 6 Day 2
 // Define SVG area dimensions
 var svgWidth = 960;
 var svgHeight = 660;
@@ -62,7 +61,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     var circRadius;
 
 
-    //  Create Circles Activity 9 Day 3
+    //  Create Circles 
     // ==============================
     var circlesGroup = chartGroup.selectAll("circle")
         .data(censusData)
@@ -116,10 +115,6 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
             toolTip.hide(data);
         });
 
-    // //Create a label group for x and y axes labels
-    // var labelGroup = chartGroup.append("g")
-    //     .attr("transform", `translate(${chartWith / 2 }, ${chartHeight + 20 })`);
-
     // Create axes labels
     chartGroup.append("text")
         .attr("transform", "rotate(-90)")
@@ -128,6 +123,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("dy", "1em")
         .attr("class", "aText")
         .text("Lacks in Healthcare (%)");
+
 
     chartGroup.append("text")
         .attr("transform", `translate(${chartWidth / 2 }, ${chartHeight + chartMargin.top + 30 })`)
