@@ -1,7 +1,7 @@
 // Copied from activity 6 Day 2
 // Define SVG area dimensions
 var svgWidth = 960;
-var svgHeight = 660;
+var svgHeight = 500;
 
 // Define the chart's margins as an object
 var chartMargin = {
@@ -58,7 +58,7 @@ function yScale(censusData, chosenYAxis) {
     // create scales
     var ylinearScale = d3.scaleLinear()
         .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8, d3.max(censusData, d => d[chosenYAxis]) * 1.2])
-        .range([0, chartWidth]);
+        .range([chartHeight, 0]);
 
     return ylinearScale;
 }
@@ -90,26 +90,26 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis, newYScale, chosenYA
 function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
     var xlabel = "";
-
+    var ylabel = "";
     if (chosenXAxis === "poverty") {
-        xlabel = "In Poverty [%]:";
+        xlabel = "In Poverty:";
     } else if (chosenXAxis === "age") {
         xlabel = "Median age: ";
     } else {
         xlable = "Houshold Income:";
     }
 
-    var ylabel = "";
+
 
     if (chosenYAxis === "healthcare") {
-        ylabel = "Healthcare (%)S";
+        ylabel = "Healthcare (%)";
     } else if (chosenYAxis === "smokes") {
         ylabel = "Smokes(%): ";
     } else {
         ylable = "Obese (%)";
     }
 
-    // Step 6: Initialize tool tip
+    //  Initialize tool tip
     // ==============================
     var toolTip = d3.tip()
         .attr("class", "d3-tip")
@@ -118,14 +118,14 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
             return (`${d.state}<br>${xlabel} ${d[chosenXAxis]}<br>${ylabel} ${d[chosenYAxis]}%`);
         });
 
-    // Step 7: Create tooltip in the chart
+    // Create tooltip in the chart
     // ==============================
     chartGroup.call(toolTip);
 
-    // Step 8: Create event listeners to display and hide the tooltip
+    // Create event listeners to display and hide the tooltip
     // ==============================
     circlesGroup.on("mouseover", function(data) {
-            toolTip.show(data, this);
+            toolTip.show(data);
         })
         // onmouseout event
         .on("mouseout", function(data, index) {
@@ -135,9 +135,8 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     return circlesGroup;
 }
 // Load data 
-d3.csv("assets/data/data.csv").then(function(censusData, err) {
-    if (err) throw err;
-    console.log(censusData);
+d3.csv("assets/data/data.csv").then(function(censusData) {
+    // console.log(censusData);
 
     // parse data and use + method to convert string to numeric value
     censusData.forEach(function(data) {
@@ -170,7 +169,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
 
 
 
-    // Step 5: Create Circles Activity 9 Day 3
+    // Create Circles 
     // ==============================
     var circlesGroup = chartGroup.selectAll("circle")
         .data(censusData)
@@ -178,7 +177,7 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
         .append("circle")
         .attr("cx", d => xLinearScale(d[chosenXAxis]))
         .attr("cy", d => yLinearScale(d[chosenYAxis]))
-        .attr("r", "20")
+        .attr("r", 20)
         .attr("class", "stateCircle");
     // circlesGroup.append("text")
     //     .text(d => d.abbr)
@@ -197,33 +196,36 @@ d3.csv("assets/data/data.csv").then(function(censusData, err) {
 
 
 
-    //Create a label group for x and y axes labels
+    //Create a label group for x axis labels
     var xlabelsGroup = chartGroup.append("g")
         .attr("transform", `translate(${chartWidth / 2}, ${chartHeight + 20})`);
 
     // Create x axes labels
     var povertyLabel = xlabelsGroup.append("text")
-        .attr("y", 0)
-        .attr("x", 20)
+        .attr("y", 20)
+        .attr("x", 0)
         .attr("value", "poverty") // value to grab for event listener
         .classed("active", true)
         .text("In Poverty (%)");
 
     var ageLabel = xlabelsGroup.append("text")
-        .attr("y", 0)
-        .attr("x", 40)
+        .attr("y", 40)
+        .attr("x", 0)
         .attr("value", "age") // value to grab for event listener
         .classed("iactive", true)
         .text("Age (Median)");
 
     var incomeLabel = xlabelsGroup.append("text")
-        .attr("y", 0)
-        .attr("x", 60)
+        .attr("y", 60)
+        .attr("x", 0)
         .attr("value", "income") // value to grab for event listener
         .classed("inactive", true)
         .text("Household Income (Median)");
 
+    //create label group for y axis labels
     var ylabelsGroup = chartGroup.append("g")
+
+    //create y axes labels
     var healthcareLabel = ylabelsGroup.append("text")
         .attr("transform", "rotate(-90)")
         .attr("y", -40)

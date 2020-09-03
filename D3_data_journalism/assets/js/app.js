@@ -58,8 +58,6 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
     chartGroup.append("g")
         .call(yAxis);
 
-    var circRadius;
-
 
     //  Create Circles 
     // ==============================
@@ -69,7 +67,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .append("circle")
         .attr("cx", d => xScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
-        .attr("r", "20")
+        .attr("r", 20)
         .attr("class", "stateCircle")
         // circlesGroup.append("text")
         //     .text(d => {
