@@ -1,13 +1,13 @@
 // Copied from activity 6 Day 2
 // Define SVG area dimensions
 var svgWidth = 960;
-var svgHeight = 500;
+var svgHeight = 660;
 
 // Define the chart's margins as an object
 var chartMargin = {
     top: 20,
     right: 40,
-    bottom: 90,
+    bottom: 80,
     left: 100
 };
 
@@ -148,7 +148,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         data.obesity = +data.obesity;
     });
 
-    //creatu=ing the sclae function above csz
+    //creating the scale function above csv import
     var xLinearScale = xScale(censusData, chosenXAxis);
     var yLinearScale = yScale(censusData, chosenYAxis);
 
@@ -212,7 +212,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("y", 40)
         .attr("x", 0)
         .attr("value", "age") // value to grab for event listener
-        .classed("iactive", true)
+        .classed("inactive", true)
         .text("Age (Median)");
 
     var incomeLabel = xlabelsGroup.append("text")
@@ -239,7 +239,7 @@ d3.csv("assets/data/data.csv").then(function(censusData) {
         .attr("y", -60)
         .attr("x", 0 - (chartHeight / 2))
         .attr("value", "smokes") // value to grab for event listener
-        .classed("iactive", true)
+        .classed("inactive", true)
         .text("Smokes (%)");
 
     var obesityLabel = ylabelsGroup.append("text")
